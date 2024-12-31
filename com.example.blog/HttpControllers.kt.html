@@ -13,7 +13,7 @@ import org.springframework.web.server.ResponseStatusException
 
 	@GetMapping(&quot;/{slug}&quot;)
 	fun findOne(@PathVariable slug: String) =
-<span class="nc bnc" id="L16" title="All 2 branches missed.">			repository.findBySlug(slug) ?: throw ResponseStatusException(NOT_FOUND, &quot;This article does not exist&quot;)</span>
+<span class="fc bfc" id="L16" title="All 2 branches covered.">			repository.findBySlug(slug) ?: throw ResponseStatusException(NOT_FOUND, &quot;This article does not exist&quot;)</span>
 
 }
 
