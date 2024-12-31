@@ -36,6 +36,25 @@ class HttpControllersTests(@Autowired val mockMvc: MockMvc) {
 	}
 
 	@Test
+	fun `Find one article`() {
+		val johnDoe = User("johnDoe", "John", "Doe")
+		val loremArticle = Article("Lorem", "Lorem", "dolor sit amet", johnDoe)
+		every { articleRepository.findBySlug("Lorem") } returns loremArticle
+		mockMvc.perform(get("/api/article/Lorem").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk)
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("\$.author.login").value(johnDoe.login))
+				.andExpect(jsonPath("\$.slug").value(loremArticle.slug))
+	}
+
+	@Test
+	fun `Find one article not found`() {
+		every { articleRepository.findBySlug("Lorem") } returns null
+		mockMvc.perform(get("/api/article/Lorem").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound)
+	}
+
+	@Test
 	fun `List users`() {
 		val johnDoe = User("johnDoe", "John", "Doe")
 		val janeDoe = User("janeDoe", "Jane", "Doe")
